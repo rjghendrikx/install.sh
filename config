@@ -8,9 +8,6 @@ CASKS=(
   ## system
   zed
   iterm2
-  zsh
-  zsh-completions
-  zsh-fast-syntax-highlighting
   the-unarchiver
   font-hack-nerd-font
   font-fontawesome
@@ -22,10 +19,10 @@ CASKS=(
   claude-code
   chatgpt 
   google-chrome
+  brave-browser
   openlens
   visual-studio-code
   pycharm
-  brave
   github
   flux-app
   # channels
@@ -63,6 +60,10 @@ FORMULAE=(
   lsd
   eza
   starship
+  zsh
+  zsh-completions
+  zsh-fast-syntax-highlighting
+  diff-so-fancy
 )
 
 # NPM Packages: Global Node packages to be installed via NPM.

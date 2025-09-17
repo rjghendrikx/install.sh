@@ -298,6 +298,13 @@ git config --global user.name "$name"
 git config --global user.email "$email"
 git config --global color.ui true
 
+# Configure diff-so-fancy if installed
+if brew list diff-so-fancy &>/dev/null; then
+  git config --global core.pager "diff-so-fancy | less --tabs=4 -RF"
+  git config --global interactive.diffFilter "diff-so-fancy --patch"
+  echo "${GREEN}Configured diff-so-fancy for git${NC}"
+fi
+
 echo
 echo "${GREEN}GITTY UP!"
 
