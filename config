@@ -5,43 +5,64 @@
 # Homebrew Casks: Applications installed via Homebrew Cask.
 # These are GUI applications available through Homebrew.
 CASKS=(
+  ## system
+  zed
   iterm2
+  zsh
+  zsh-completions
+  zsh-fast-syntax-highlighting
+  the-unarchiver
+  font-hack-nerd-font
+  font-fontawesome
+  keymapp
+  ## workflow
+  alfred
+  bartender
+  claude
+  claude-code
+  chatgpt 
   google-chrome
-  arc
+  openlens
   visual-studio-code
-  spotify
-  vlc
-  dropbox
-  google-drive
-  sync
+  pycharm
+  brave
   github
-  cyberduck
+  flux-app
+  # channels
+  slack
+  microsoft-teams
+  proton-mail
+  proton-mail-bridge
   postman
   discord
-  microsoft-teams
-  silicon
-  qflipper
-  pieces
   ollama
-  devtoys
-  the-unarchiver
-  cheatsheet
-  zenmap
-  tiled
-  arduino-ide
-  transmission
+  signal
+  whatsapp
+  ## tools
+  draw
+  folx
+  kobo
+  dbeaver-community
+  logitech-camera-settings
+  cyberduck
+  tg-pro
+  ## media
+  rekordbox
+  mixed-in-key
+  spotify
+  vlc
+  roon
 )
 
 # Homebrew Formulae: Command line tools installed via Homebrew.
 FORMULAE=(
-  speedtest-cli
   tree
   nmap
   wget
   git
-  pinentry-mac
-  python
-  python-tk
+  lsd
+  eza
+  starship
 )
 
 # NPM Packages: Global Node packages to be installed via NPM.
@@ -52,15 +73,9 @@ NPMPACKAGES=(
 # VSCode Extensions: Specifies the IDs of Visual Studio Code extensions to install.
 # Each ID corresponds to an extension on the Visual Studio Code Marketplace.
 VSCODE=(
-  "esbenp.prettier-vscode"
   "GitHub.copilot"
-  "dsznajder.es7-react-js-snippets"
-  "ritwickdey.liveserver"
   "github.vscode-pull-request-github"
-  "sourcegraph.cody-ai"
   "eamodio.gitlens"
-  "meshintelligenttechnologiesinc.pieces-vscode"
-  "foxundermoon.shell-format"
 )
 
 # App Store Apps: List of App Store app IDs to install via `mas` (Mac App Store CLI).
@@ -69,6 +84,12 @@ APPSTORE=(
   409201541  # Pages
   409203825  # Numbers
   1278508951 # Trello
+  1112075769 # PinePlayer
+  462058435 # Microsoft Excel
+  985367838 # Microsoft Outlook
+  462054704 # Microsoft Word
+  462062816 # Microsoft Powerpoint
+  441258766 # Magnet
 )
 
 # SYSTEM SETTINGS: Commands to configure macOS system preferences and behaviors.
@@ -88,7 +109,7 @@ SETTINGS=(
   # Shows the path bar in Finder
   "defaults write com.apple.finder ShowPathbar -bool true"
   # Shows the status bar in Finder
-  "defaults write com.apple.finder ShowStatusBar -bool true"
+  "defaults write com.apple.finder ShowStatusBar -bool false"
   # Makes new Finder windows open in the home directory
   "defaults write com.apple.finder NewWindowTarget PfHm"
   # Sets the preferred view style in Finder to list view
@@ -118,18 +139,19 @@ DOCK_ADD=(
   "/Applications/GitHub Desktop.app"
   "/Applications/Spotify.app"
   "/Applications/Discord.app"
-  "/Applications/Microsoft Teams (work or school).app"
 )
 DOCK_REMOVE=(
-  "Meldinger"
-  "Kart"
-  "Bilder"
-  "Påminnelser"
   "FaceTime"
-  "Kontakter"
   "TV"
-  "Musikk"
-  "Mail"
+  "Contacts"
+  "Music"
+  "Podcasts"
+  "App Store"
+  "Numbers"
+  "Pages"
+  "Maps"
+  "Photos"
+  "Keynote"
 )
 
 # HOMEBREW AUTOUPDATE: Configures the frequency of Homebrew package updates in milliseconds.
