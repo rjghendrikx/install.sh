@@ -2,10 +2,10 @@
 # ==============================================================================
 # Title: install.sh
 # Author: Daniel Vier
-# Email: daniel.vier@gmail.com
+# Editor: Ruud Hendrikx
 # Description: Automates the setup and configuration of macOS, including
 #              installation of essential applications and system preferences.
-# Last Updated: September 17, 2025
+# Last Edited: September 17, 2025
 # ==============================================================================
 
 set -e  # Exit on error
@@ -70,9 +70,6 @@ echo "${GREEN}Looking for updates.."
 echo
 sudo softwareupdate -i -a
 
-# Install Rosetta (DISABLED)
-# sudo softwareupdate --install-rosetta --agree-to-license
-
 # Install UV
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
@@ -83,10 +80,10 @@ install_homebrew() {
     return 0
   fi
 
-  echo
+echo
   echo "${GREEN}Installing Homebrew${NC}"
-  echo
-  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+echo
+NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 }
 
 install_homebrew
@@ -157,9 +154,9 @@ if command -v node &> /dev/null; then
   echo
   echo "${GREEN}Node.js already installed: $(node --version)${NC}"
 else
-  echo
-  echo -n "${RED}Install Node.js via NVM or Brew? ${NC}[N/b]"
-  read REPLY
+echo
+echo -n "${RED}Install Node.js via NVM or Brew? ${NC}[N/b]"
+read REPLY
 fi
 
 if [[ -z $REPLY || $REPLY =~ ^[Nn]$ ]]; then
