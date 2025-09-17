@@ -5,8 +5,27 @@
 # Email: daniel.vier@gmail.com
 # Description: Automates the setup and configuration of macOS, including
 #              installation of essential applications and system preferences.
-# Last Updated: March 1, 2024
+# Last Updated: September 17, 2025
 # ==============================================================================
+
+set -e  # Exit on error
+
+# Check prerequisites
+check_prerequisites() {
+  # Check if config file exists
+  if [[ ! -f "./config" ]]; then
+    echo "${RED}Error: config file not found${NC}"
+    exit 1
+  fi
+
+  # Check network connectivity
+  if ! curl -s --connect-timeout 5 https://www.google.com > /dev/null; then
+    echo "${RED}Error: No internet connection${NC}"
+    exit 1
+  fi
+
+  echo "${GREEN}Prerequisites check passed${NC}"
+}
 
 source ./config
 
@@ -28,7 +47,12 @@ echo "| | | | \__ \ || (_| | | |_\__ \ | | |"
 echo "|_|_| |_|___/\__\__,_|_|_(_)___/_| |_|"
 echo
 echo
-echo Enter root password
+
+# Run prerequisites check
+check_prerequisites
+
+echo
+echo "${GREEN}Enter root password${NC}"
 
 # Ask for the administrator password upfront.
 sudo -v
@@ -46,14 +70,26 @@ echo "${GREEN}Looking for updates.."
 echo
 sudo softwareupdate -i -a
 
-# Install Rosetta
-sudo softwareupdate --install-rosetta --agree-to-license
+# Install Rosetta (DISABLED)
+# sudo softwareupdate --install-rosetta --agree-to-license
+
+# Install UV
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Install Homebrew
-echo
-echo "${GREEN}Installing Homebrew"
-echo
-NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+install_homebrew() {
+  if command -v brew &> /dev/null; then
+    echo "${GREEN}Homebrew already installed${NC}"
+    return 0
+  fi
+
+  echo
+  echo "${GREEN}Installing Homebrew${NC}"
+  echo
+  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+}
+
+install_homebrew
 
 # Append Homebrew initialization to .zprofile
 echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >>${HOME}/.zprofile
@@ -78,21 +114,20 @@ else
 
   # Install Casks and Formulae
   echo
-  echo "${GREEN}Installing formulae..."
+  echo "${GREEN}Installing formulae...${NC}"
+  set +e  # Don't exit on error for individual packages
   for formula in "${FORMULAE[@]}"; do
-    brew install "$formula"
-    if [ $? -ne 0 ]; then
-      echo "${RED}Failed to install $formula. Continuing...${NC}"
-    fi
+    brew install "$formula" || echo "${RED}✗ Failed to install $formula${NC}"
   done
+  set -e  # Re-enable exit on error
 
-  echo "${GREEN}Installing casks..."
+  echo
+  echo "${GREEN}Installing casks...${NC}"
+  set +e  # Don't exit on error for individual packages
   for cask in "${CASKS[@]}"; do
-    brew install --cask "$cask"
-    if [ $? -ne 0 ]; then
-      echo "${RED}Failed to install $cask. Continuing...${NC}"
-    fi
+    brew install --cask "$cask" || echo "${RED}✗ Failed to install $cask${NC}"
   done
+  set -e  # Re-enable exit on error
 
   # App Store
   echo
@@ -118,9 +153,15 @@ else
 fi
 
 # Install Node.js
-echo
-echo -n "${RED}Install Node.js via NVM or Brew? ${NC}[N/b]"
-read REPLY
+if command -v node &> /dev/null; then
+  echo
+  echo "${GREEN}Node.js already installed: $(node --version)${NC}"
+else
+  echo
+  echo -n "${RED}Install Node.js via NVM or Brew? ${NC}[N/b]"
+  read REPLY
+fi
+
 if [[ -z $REPLY || $REPLY =~ ^[Nn]$ ]]; then
   echo "${GREEN}Installing NVM..."
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
@@ -165,7 +206,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 fi
 
 echo
-echo -n "${RED}Install PosreSQL, MySQL & MongoDB? ${NC}[y/N]"
+echo -n "${RED}Install PostgreSQL, MySQL & MongoDB? ${NC}[y/N]"
 read REPLY
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   # Postgres
@@ -262,12 +303,6 @@ git config --global color.ui true
 
 echo
 echo "${GREEN}GITTY UP!"
-
-# ohmyzsh
-echo
-echo "${GREEN}Installing ohmyzsh!"
-echo
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
 clear
 echo "${GREEN}______ _____ _   _  _____ "
